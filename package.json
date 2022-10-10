@@ -1,5 +1,5 @@
 {
-  "name": "big-number-utils",
+  "name": "@HailstoneLabs/big-number-utils",
   "version": "1.0.0",
   "description": "",
   "main": "dist/src/index.js",
