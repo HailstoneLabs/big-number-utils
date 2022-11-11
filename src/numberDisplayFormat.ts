@@ -124,7 +124,7 @@ function getDpFormat(
   shownLessThanZeroPointZeroOne = false
 ): string {
   const valueStr = getStringInput(value);
-  if (strToWad(valueStr).isZero()) return "0.00";
+  if (strToWad(valueStr).isZero()) return "0." + getZerosStr(decimalPlace);
   if (
     shownLessThanZeroPointZeroOne &&
     strToWad(valueStr).lt(strToWad("0.01"))

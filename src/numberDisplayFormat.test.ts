@@ -114,6 +114,10 @@ describe('getDpFormat', () => {
     expect(getDpFormat('0', 2, 'down', true)).toBe('0.00')
   })
 
+  test('0 -> 0.00000', () => {
+    expect(getDpFormat('0', 5, 'down', true)).toBe('0.00000')
+  })
+
   test('-1.1234567,6 -> -1.123456', () => {
     expect(getDpFormat('-1.1234567', 6)).toBe('-1.123456')
   })
