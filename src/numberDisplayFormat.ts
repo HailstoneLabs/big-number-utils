@@ -135,8 +135,7 @@ function getDpFormat(
   if (valueStr.includes(".")) {
     // it is decimal number
     const [integerStr, decimalNum] = valueStr.split(".");
-    if (!decimalNum) return fillZeros(valueStr.replace(".", ""), 2);
-
+    if (!decimalNum) return fillZeros(valueStr.replace(".", ""), decimalPlace);
     const digitForComparison = decimalNum[decimalPlace];
     const shouldRoundOff =
       digitForComparison &&

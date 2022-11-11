@@ -110,6 +110,10 @@ describe('getDpFormat', () => {
     expect(getDpFormat('0.001', 2, 'down', true)).toBe('< 0.01')
   })
 
+  test('0 -> 0.00', () => {
+    expect(getDpFormat('0', 2, 'down', true)).toBe('0.00')
+  })
+
   test('-1.1234567,6 -> -1.123456', () => {
     expect(getDpFormat('-1.1234567', 6)).toBe('-1.123456')
   })
@@ -140,12 +144,12 @@ describe('getDpFormat', () => {
     expect(getDpFormat('abc')).toBe('0.00')
   })
 
-  test('0 -> 0.00', () => {
-    expect(getDpFormat('0')).toBe('0.00')
-  })
-
   test('12. -> 12.00', () => {
     expect(getDpFormat('12.')).toBe('12.00')
+  })
+
+  test('12. -> 12.0000', () => {
+    expect(getDpFormat('12.', 4)).toBe('12.0000')
   })
 })
 
