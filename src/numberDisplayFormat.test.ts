@@ -139,6 +139,14 @@ describe('getDpFormat', () => {
   test('abc,2 -> 0.00', () => {
     expect(getDpFormat('abc')).toBe('0.00')
   })
+
+  test('0 -> 0.00', () => {
+    expect(getDpFormat('0')).toBe('0.00')
+  })
+
+  test('12. -> 12.00', () => {
+    expect(getDpFormat('12.')).toBe('12.00')
+  })
 })
 
 describe('getSfFormat', () => {

@@ -135,7 +135,7 @@ function getDpFormat(
   if (valueStr.includes(".")) {
     // it is decimal number
     const [integerStr, decimalNum] = valueStr.split(".");
-    if (!decimalNum) return integerStr;
+    if (!decimalNum) return fillZeros(valueStr.replace(".", ""), 2);
 
     const digitForComparison = decimalNum[decimalPlace];
     const shouldRoundOff =
@@ -225,5 +225,5 @@ export {
   getMillifiedFormat,
   getSfFormat,
   getDpFormat,
-  getStringInput,
+  getStringInput
 };
