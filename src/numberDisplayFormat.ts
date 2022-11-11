@@ -124,6 +124,7 @@ function getDpFormat(
   shownLessThanZeroPointZeroOne = false
 ): string {
   const valueStr = getStringInput(value);
+  if (strToWad(valueStr).isZero()) return "0." + getZerosStr(decimalPlace);
   if (
     shownLessThanZeroPointZeroOne &&
     strToWad(valueStr).lt(strToWad("0.01"))
@@ -134,6 +135,7 @@ function getDpFormat(
   if (valueStr.includes(".")) {
     // it is decimal number
     const [integerStr, decimalNum] = valueStr.split(".");
+    if (!decimalNum) return fillZeros(valueStr.replace(".", ""), decimalPlace);
     const digitForComparison = decimalNum[decimalPlace];
     const shouldRoundOff =
       digitForComparison &&
@@ -222,5 +224,5 @@ export {
   getMillifiedFormat,
   getSfFormat,
   getDpFormat,
-  getStringInput,
+  getStringInput
 };
