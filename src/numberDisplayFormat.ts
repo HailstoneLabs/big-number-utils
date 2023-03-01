@@ -169,7 +169,17 @@ function getDpFormat(
  * @param {string | BigNumber} value a value in string or in WAD
  * @returns {string} a millified value with 1 d.p. For example, 12.2M, 1.4K
  */
-function getMillifiedFormat(value: string | BigNumber): string {
+function getMillifiedFormat(
+  value: string | BigNumber,
+  shownLessThanZeroPointZeroOne = false
+): string {
+  const valueStr = getStringInput(value);
+  if (
+    shownLessThanZeroPointZeroOne &&
+    strToWad(valueStr).lt(strToWad("0.01"))
+  ) {
+    return "< 0.01";
+  }
   // a value may be too large to directly convert into Number.
   // so trim it first
   return millify(Number(getDpFormat(getStringInput(value), 1)));
@@ -184,8 +194,10 @@ function getMillifiedFormat(value: string | BigNumber): string {
 
 function getCommifiedFormat(
   actualValue: BigNumber | string,
-  decimalPlace = 2
+  decimalPlace = 2,
+  showExact = false
 ): string {
+  if (actualValue === "") return "0";
   const actualValueWAD = getWad(actualValue);
   if (actualValueWAD.isZero()) return getDpFormat("0.0", decimalPlace);
   const isLessThanZeroPointZeroOne = lessThanZeroPointZeroOne(
@@ -194,7 +206,10 @@ function getCommifiedFormat(
   );
   const displayValue = isLessThanZeroPointZeroOne
     ? "< 0.01"
+    : showExact
+    ? utils.commify(getStringInput(actualValue))
     : utils.commify(getDpFormat(actualValue, decimalPlace));
+
   return displayValue;
 }
 
@@ -224,5 +239,5 @@ export {
   getMillifiedFormat,
   getSfFormat,
   getDpFormat,
-  getStringInput
+  getStringInput,
 };

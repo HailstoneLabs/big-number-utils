@@ -230,4 +230,10 @@ describe('getCommifiedFormat', () => {
   it('returns 0.00 when passing a non-number string', () => {
     expect(getCommifiedFormat('abc')).toBe('0.00')
   })
+
+  it('returns 1,120,121.568234233234 when passing a string of 1120121.568234233234 and showExact is true', () => {
+    expect(getCommifiedFormat('1120121.568234233234', 2, true)).toBe(
+      '1,120,121.568234233234',
+    )
+  })
 })
