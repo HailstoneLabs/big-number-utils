@@ -35,8 +35,8 @@ _WAD and RAY_
 A wad is a decimal number with 18 digits of precision and a ray is a decimal number with 27 digits of precision. These functions are necessary to account for the difference between how integer arithmetic behaves normally, and how decimal arithmetic should actually work.
 
 ```js
-const WAD = BigNumber.from(10).pow(18);
-const RAY = BigNumber.from(10).pow(27);
+const WAD = BigNumber.from(10).pow(18)
+const RAY = BigNumber.from(10).pow(27)
 ```
 
 ## DS Math API Reference
@@ -62,10 +62,10 @@ It returns the percentage of x in y, in string and return upperBound if the valu
 - `returns` **{string}**: the percentage of x in y, in string
 
 ```js
-getPercentageFromTwoWAD(strToWad("20000"), strToWad("40000"));
+getPercentageFromTwoWAD(strToWad('20000'), strToWad('40000'))
 //=> 50
 
-getPercentageFromTwoWAD(strToWad("50000"), strToWad("40000"), strToWad("100"));
+getPercentageFromTwoWAD(strToWad('50000'), strToWad('40000'), strToWad('100'))
 //=> 100
 ```
 
@@ -90,7 +90,7 @@ It returns the summation of two values.
 **Example**
 
 ```js
-sum(strToWad("20000"), strToWad("30000"));
+sum(strToWad('20000'), strToWad('30000'))
 //=> 50000
 ```
 
@@ -109,10 +109,10 @@ It compare x - y with the value.
 **Example**
 
 ```js
-differenceComparesValue(BigNumber.from(20000), BigNumber.from(20000), "eq");
+differenceComparesValue(BigNumber.from(20000), BigNumber.from(20000), 'eq')
 //=> true
 
-differenceComparesValue(BigNumber.from(40000), BigNumber.from(20000), "lt");
+differenceComparesValue(BigNumber.from(40000), BigNumber.from(20000), 'lt')
 //=> false
 ```
 
@@ -248,10 +248,10 @@ Check whether bnString can be parsed as a BigNumber.
 - `returns` **{boolean}**: whether the string is parsable
 
 ```js
-isParsableString(strToWad("100000000"), 18, false);
+isParsableString(strToWad('100000000'), 18, false)
 //=> true
 
-isParsableString(strToWad("100000000000000000000"), 18, false);
+isParsableString(strToWad('100000000000000000000'), 18, false)
 //=> false
 ```
 
@@ -278,7 +278,7 @@ If a value is in WAD, it will format the value.
 **Example**
 
 ```js
-getStringInput(strToWad("20000"));
+getStringInput(strToWad('20000'))
 //=> 20000
 ```
 
@@ -296,33 +296,34 @@ It trim extra decimals in order to avoid fractional component exceeds decimals.
 **Example**
 
 ```js
-getDpFormat(strToWad("1.1234567"), 6);
+getDpFormat(strToWad('1.1234567'), 6)
 //=> 1.123456
 
-getDpFormat(strToWad("1.1234567"), 6, "off");
+getDpFormat(strToWad('1.1234567'), 6, 'off')
 //=> 1.123457
 ```
 
-### [.getMillifiedFormat](src/numberDisplayFormat.ts#L170)
+### [.getMillifiedFormat](src/numberDisplayFormat.ts#L172)
 
 It converts long numbers to human-readable string.
 
 **Params**
 
 - `value` **{string | BigNumber}**: a value in string or in WAD
+
 - `returns` **{string}**: a millified value with 1 d.p.
 
 **Example**
 
 ```js
-getMillifiedFormat(strToWad("1424000"));
+getMillifiedFormat(strToWad('1424000'))
 //=> 1.4M
 
-getMillifiedFormat(strToWad("2500"));
+getMillifiedFormat(strToWad('2500'))
 //=> 2.5K
 ```
 
-### [.getCommifiedFormat](src/numberDisplayFormat.ts#L183)
+### [.getCommifiedFormat](src/numberDisplayFormat.ts#L195)
 
 It always checks whether an actualValue is less than 0.01.
 
@@ -335,14 +336,14 @@ It always checks whether an actualValue is less than 0.01.
 **Example**
 
 ```js
-getCommifiedFormat(strToWad("0.00007"));
+getCommifiedFormat(strToWad('0.00007'))
 //=> < 0.01
 
-getCommifiedFormat(strToWad("1255354.664"));
+getCommifiedFormat(strToWad('1255354.664'))
 //=> 1,255,354.66
 ```
 
-### [.getDynamicFormat](src/numberDisplayFormat.ts#L206)
+### [.getDynamicFormat](src/numberDisplayFormat.ts#L223)
 
 If actualValue is greater than or equal to 100000 return millified format value, else return commified format value.
 
@@ -355,9 +356,9 @@ If actualValue is greater than or equal to 100000 return millified format value,
 **Example**
 
 ```js
-getDynamicFormat(strToWad("1024000"));
+getDynamicFormat(strToWad('1024000'))
 //=> 1.02M
 
-getDynamicFormat(strToWad("90000"));
+getDynamicFormat(strToWad('90000'))
 //=> 90,000
 ```
