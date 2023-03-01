@@ -204,6 +204,10 @@ describe('getMillifiedFormat', () => {
   it('returns 0 when passing a non-number string', () => {
     expect(getMillifiedFormat('abc')).toBe('0')
   })
+
+  it('returns < 0.01 when passing 0.00001 and shownLessThanZeroPointZeroOne is true', () => {
+    expect(getMillifiedFormat('0.00001', true)).toBe('< 0.01')
+  })
 })
 
 describe('getCommifiedFormat', () => {
@@ -235,5 +239,9 @@ describe('getCommifiedFormat', () => {
     expect(getCommifiedFormat('1120121.568234233234', 2, true)).toBe(
       '1,120,121.568234233234',
     )
+  })
+
+  it('returns < 0.01 when passing a string of 0.000001', () => {
+    expect(getCommifiedFormat('0.000001', 0)).toBe('< 0.01')
   })
 })
