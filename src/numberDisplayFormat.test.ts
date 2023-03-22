@@ -208,6 +208,10 @@ describe('getMillifiedFormat', () => {
   it('returns < 0.01 when passing 0.00001 and shownLessThanZeroPointZeroOne is true', () => {
     expect(getMillifiedFormat('0.00001', true)).toBe('< 0.01')
   })
+
+  it('returns 0 when passing 0 and shownLessThanZeroPointZeroOne is false', () => {
+    expect(getMillifiedFormat('0', false)).toBe('0')
+  })
 })
 
 describe('getCommifiedFormat', () => {
