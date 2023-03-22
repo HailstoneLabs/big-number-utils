@@ -213,7 +213,10 @@ function getCommifiedFormat(
     ? '< 0.01'
     : showExact
     ? utils.commify(getStringInput(actualValue))
-    : utils.commify(getDpFormat(actualValue, decimalPlaceInput))
+    : fillZeros(
+        utils.commify(getDpFormat(actualValue, decimalPlaceInput)),
+        decimalPlaceInput,
+      )
 
   return displayValue
 }

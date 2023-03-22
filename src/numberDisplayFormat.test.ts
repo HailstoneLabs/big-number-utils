@@ -248,4 +248,8 @@ describe('getCommifiedFormat', () => {
   it('returns < 0.01 when passing a string of 0.000001', () => {
     expect(getCommifiedFormat('0.000001', 0)).toBe('< 0.01')
   })
+
+  it('returns 1,120,121.568700 when passing a string of 1120121.5687', () => {
+    expect(getCommifiedFormat('1120121.5687', 6)).toBe('1,120,121.568700')
+  })
 })
