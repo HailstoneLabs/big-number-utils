@@ -137,6 +137,18 @@ export function wdiv(x: BigNumber, y: BigNumber): BigNumber {
 }
 
 /**
+ * @param {BigNumber} x in WAD
+ * @param {BigNumber} y in WAD
+ * @returns the quotient of x divided by y, in WAD
+ */
+export function safeWdiv(x: BigNumber, y: BigNumber): BigNumber {
+  if (y.lte(constants.Zero)) {
+    return constants.Zero
+  }
+  return x.mul(WAD).add(y.div(2)).div(y)
+}
+
+/**
  * @param {BigNumber} x in RAY
  * @param {BigNumber} y in RAY
  * @returns the product of x and y, in RAY

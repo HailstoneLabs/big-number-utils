@@ -41,7 +41,7 @@ const RAY = BigNumber.from(10).pow(27)
 
 ## DS Math API Reference
 
-### [.strToWad](src/DSMath.ts#L197)
+### [.strToWad]
 
 It changes string to WAD if not undefined or ParsableString, else return constants.Zero
 
@@ -50,7 +50,7 @@ It changes string to WAD if not undefined or ParsableString, else return constan
 - `wadString` **{string | undefined}**
 - `returns` **{BigNumber}**
 
-### [.getPercentageFromTwoWAD](src/DSMath.ts#L215)
+### [.getPercentageFromTwoWAD]
 
 It returns the percentage of x in y, in string and return upperBound if the value exceeds upperBound.
 
@@ -69,7 +69,7 @@ getPercentageFromTwoWAD(strToWad('50000'), strToWad('40000'), strToWad('100'))
 //=> 100
 ```
 
-### [.getMinValue](src/DSMath.ts#L239)
+### [.getMinValue]
 
 **Params**
 
@@ -77,7 +77,7 @@ getPercentageFromTwoWAD(strToWad('50000'), strToWad('40000'), strToWad('100'))
 - `y` **{string}**: y number in string
 - `returns` **{BigNumber}**: the minimum value in WAD
 
-### [.sum](src/DSMath.ts#L15)
+### [.sum]
 
 It returns the summation of two values.
 
@@ -94,7 +94,7 @@ sum(strToWad('20000'), strToWad('30000'))
 //=> 50000
 ```
 
-### [.differenceComparesValue](src/DSMath.ts#L27)
+### [.differenceComparesValue]
 
 It compare x - y with the value.
 
@@ -116,7 +116,7 @@ differenceComparesValue(BigNumber.from(40000), BigNumber.from(20000), 'lt')
 //=> false
 ```
 
-### [.lessThanZeroPointZeroOne](src/DSMath.ts#L42)
+### [.lessThanZeroPointZeroOne]
 
 It checks whether x is less than 0.01.
 
@@ -133,7 +133,7 @@ lessThanZeroPointZeroOne(BigNumber.from(0.00003), 5))
 //=> true
 ```
 
-### [.changeDecimal](src/DSMath.ts#L55)
+### [.changeDecimal]
 
 It changes tokenA amount (with tokenA decimal) to target value (with tokenB decimal).
 
@@ -144,7 +144,7 @@ It changes tokenA amount (with tokenA decimal) to target value (with tokenB deci
 - `fromAmount` **{BigNumber}**
 - `returns` **{BigNumber}**
 
-### [.nativeToWAD](src/DSMath.ts#L73)
+### [.nativeToWAD]
 
 **Params**
 
@@ -152,7 +152,7 @@ It changes tokenA amount (with tokenA decimal) to target value (with tokenB deci
 - `decimal` **{number}**
 - `returns` **{BigNumber}**: convertion to WAD
 
-### [.wadToNative](src/DSMath.ts#L83)
+### [.wadToNative]
 
 **Params**
 
@@ -160,35 +160,35 @@ It changes tokenA amount (with tokenA decimal) to target value (with tokenB deci
 - `decimal` **{number}**
 - `returns` **{BigNumber}**: convertion to Origin
 
-### [.bnIntToWAD](src/DSMath.ts#L93)
+### [.bnIntToWAD]
 
 **Params**
 
 - `x` **{BigNumber}** in BigNumber Int
 - `returns` **{BigNumber}**: convertion to WAD
 
-### [.bnIntToRAY](src/DSMath.ts#L101)
+### [.bnIntToRAY]
 
 **Params**
 
 - `x` **{BigNumber}** x in BigNumber Int
 - `returns` **{BigNumber}**: convertion to RAY
 
-### [.wadToRay](src/DSMath.ts#L109)
+### [.wadToRay]
 
 **Params**
 
 - `x` **{BigNumber}** x in WAD
 - `returns` **{BigNumber}**: convertion to RAY
 
-### [.rayToWad](src/DSMath.ts#L117)
+### [.rayToWad]
 
 **Params**
 
 - `x` **{BigNumber}** x in RAY
 - `returns` **{BigNumber}**: convertion to WAD
 
-### [.wmul](src/DSMath.ts#L126)
+### [.wmul]
 
 **Params**
 
@@ -196,7 +196,7 @@ It changes tokenA amount (with tokenA decimal) to target value (with tokenB deci
 - `y` **{BigNumber}** y in WAD
 - `returns` **{BigNumber}**: the product of x and y, in WAD
 
-### [.wdiv](src/DSMath.ts#L135)
+### [.wdiv]
 
 **Params**
 
@@ -204,7 +204,15 @@ It changes tokenA amount (with tokenA decimal) to target value (with tokenB deci
 - `y` **{BigNumber}** y in WAD
 - `returns` **{BigNumber}**: the quotient of x divided by y, in WAD
 
-### [.rmul](src/DSMath.ts#L144)
+### [.safeWdiv]
+
+**Params**
+
+- `x` **{BigNumber}** x in WAD
+- `y` **{BigNumber}** y in WAD
+- `returns` **{BigNumber}**: the quotient of x divided by y, in WAD
+
+### [.rmul]
 
 **Params**
 
@@ -212,7 +220,7 @@ It changes tokenA amount (with tokenA decimal) to target value (with tokenB deci
 - `y` **{BigNumber}** y in RAY
 - `returns` **{BigNumber}**: the product of x and y, in RAY
 
-### [.rpow](src/DSMath.ts#L153)
+### [.rpow]
 
 **Params**
 
@@ -220,14 +228,14 @@ It changes tokenA amount (with tokenA decimal) to target value (with tokenB deci
 - `n` **{BigNumber}**
 - `returns` **{BigNumber}**: the exponential of x to the power n, in RAY
 
-### [.sqrt](src/DSMath.ts#L171)
+### [.sqrt]
 
 **Params**
 
 - `x` **{BigNumber}** x in BigNumber Int
 - `returns` **{BigNumber}**: the square root of x, in BigNumber Int
 
-### [.wsqrt](src/DSMath.ts#L188)
+### [.wsqrt]
 
 **Params**
 
@@ -236,7 +244,7 @@ It changes tokenA amount (with tokenA decimal) to target value (with tokenB deci
 
 ## Parsable String API Reference
 
-### [.isParsableString](src/isParsableString.ts#L9)
+### [.isParsableString]
 
 Check whether bnString can be parsed as a BigNumber.
 
@@ -255,7 +263,7 @@ isParsableString(strToWad('100000000000000000000'), 18, false)
 //=> false
 ```
 
-### [.getParsableString](src/isParsableString.ts#L32)
+### [.getParsableString]
 
 **Params**
 
@@ -266,7 +274,7 @@ isParsableString(strToWad('100000000000000000000'), 18, false)
 
 ## Number Display Format API Reference
 
-### [.getStringInput](src/numberDisplayFormat.ts#L40)
+### [.getStringInput]
 
 If a value is in WAD, it will format the value.
 
@@ -282,7 +290,7 @@ getStringInput(strToWad('20000'))
 //=> 20000
 ```
 
-### [.getDpFormat](src/numberDisplayFormat.ts#L120)
+### [.getDpFormat]
 
 It trim extra decimals in order to avoid fractional component exceeds decimals.
 
@@ -303,7 +311,7 @@ getDpFormat(strToWad('1.1234567'), 6, 'off')
 //=> 1.123457
 ```
 
-### [.getMillifiedFormat](src/numberDisplayFormat.ts#L172)
+### [.getMillifiedFormat]
 
 It converts long numbers to human-readable string.
 
@@ -323,7 +331,7 @@ getMillifiedFormat(strToWad('2500'))
 //=> 2.5K
 ```
 
-### [.getCommifiedFormat](src/numberDisplayFormat.ts#L195)
+### [.getCommifiedFormat]
 
 It always checks whether an actualValue is less than 0.01.
 
@@ -343,7 +351,7 @@ getCommifiedFormat(strToWad('1255354.664'))
 //=> 1,255,354.66
 ```
 
-### [.getDynamicFormat](src/numberDisplayFormat.ts#L223)
+### [.getDynamicFormat]
 
 If actualValue is greater than or equal to 100000 return millified format value, else return commified format value.
 
