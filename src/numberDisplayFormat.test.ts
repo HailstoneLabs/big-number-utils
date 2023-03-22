@@ -44,7 +44,7 @@ describe('getDynamicFormat', () => {
     expect(getDynamicFormat(strToWad('100000'))).toBe('100K')
   })
   test('BN (< 100000) 10000 -> (commify) 1,0000.00', () => {
-    expect(getDynamicFormat(strToWad('10000'))).toBe('10,000.0')
+    expect(getDynamicFormat(strToWad('10000'))).toBe('10,000.00')
   })
   test('BN (< 100000) 1000.123 -> (commify) 1,0000.12', () => {
     expect(getDynamicFormat(strToWad('1000.123'))).toBe('1,000.12')
@@ -56,7 +56,7 @@ describe('getDynamicFormat', () => {
     expect(getDynamicFormat('100000')).toBe('100K')
   })
   test('String (< 100000) 10000 -> (commify) 10,000.00', () => {
-    expect(getDynamicFormat('10000')).toBe('10,000.0')
+    expect(getDynamicFormat('10000')).toBe('10,000.00')
   })
   test('String (< 100000) 1000.123 -> (commify) 1,0000.12', () => {
     expect(getDynamicFormat('1000.123')).toBe('1,000.12')
