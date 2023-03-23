@@ -145,7 +145,7 @@ export function safeWdiv(x: BigNumber, y: BigNumber): BigNumber {
   if (y.eq(constants.Zero)) {
     return constants.Zero
   }
-  return x.mul(WAD).add(y.div(2)).div(y)
+  return wdiv(x, y)
 }
 
 /**

@@ -196,7 +196,6 @@ function getMillifiedFormat(
 function getCommifiedFormat(
   actualValue: BigNumber | string,
   decimalPlace: number | 'exact' = 2,
-  showExact = false,
 ): string {
   let decimalPlaceInput = 2
   if (typeof decimalPlace == 'number') {
@@ -211,7 +210,7 @@ function getCommifiedFormat(
   )
   const displayValue = isLessThanZeroPointZeroOne
     ? '< 0.01'
-    : showExact
+    : decimalPlace === 'exact'
     ? utils.commify(getStringInput(actualValue))
     : fillZeros(
         utils.commify(getDpFormat(actualValue, decimalPlaceInput)),

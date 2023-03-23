@@ -240,7 +240,7 @@ describe('getCommifiedFormat', () => {
   })
 
   it('returns 1,120,121.568234233234 when passing a string of 1120121.568234233234 and showExact is true', () => {
-    expect(getCommifiedFormat('1120121.568234233234', 2, true)).toBe(
+    expect(getCommifiedFormat('1120121.568234233234', 'exact')).toBe(
       '1,120,121.568234233234',
     )
   })
