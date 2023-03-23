@@ -212,6 +212,14 @@ It changes tokenA amount (with tokenA decimal) to target value (with tokenB deci
 - `y` **{BigNumber}** y in WAD
 - `returns` **{BigNumber}**: the quotient of x divided by y, in WAD
 
+### [.safeDiv]
+
+**Params**
+
+- `x` **{BigNumber}** x in BigNumber
+- `y` **{BigNumber}** y in BigNumber
+- `returns` **{BigNumber}**: the quotient of x divided by y, in BigNumber
+
 ### [.rmul]
 
 **Params**

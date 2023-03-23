@@ -142,10 +142,22 @@ export function wdiv(x: BigNumber, y: BigNumber): BigNumber {
  * @returns the quotient of x divided by y, in WAD
  */
 export function safeWdiv(x: BigNumber, y: BigNumber): BigNumber {
-  if (y.lte(constants.Zero)) {
+  if (y.eq(constants.Zero)) {
     return constants.Zero
   }
   return x.mul(WAD).add(y.div(2)).div(y)
+}
+
+/**
+ * @param {BigNumber} x in BigNumber
+ * @param {BigNumber} y in BigNumber
+ * @returns the quotient of x divided by y, in BigNumber
+ */
+export function safeDiv(x: BigNumber, y: BigNumber): BigNumber {
+  if (y.eq(constants.Zero)) {
+    return constants.Zero
+  }
+  return x.div(y)
 }
 
 /**
