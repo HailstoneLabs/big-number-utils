@@ -197,7 +197,7 @@ function getCommifiedFormat(
   actualValue: BigNumber | string,
   decimalPlace: number | 'exact' = 2,
 ): string {
-  let decimalPlaceInput = 2
+  let decimalPlaceInput = 0
   if (typeof decimalPlace == 'number') {
     decimalPlaceInput = decimalPlace
   }
