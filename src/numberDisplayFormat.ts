@@ -174,11 +174,12 @@ function getMillifiedFormat(
   shownLessThanZeroPointZeroOne = false,
 ): string {
   const valueStr = getStringInput(value)
-  if (
-    shownLessThanZeroPointZeroOne &&
-    strToWad(valueStr).lt(strToWad('0.01')) &&
-    strToWad(valueStr).gt(strToWad('0'))
-  ) {
+  const islessThanZeroPointZeroOne = lessThanZeroPointZeroOne(
+    strToWad(valueStr),
+    18,
+  )
+  if (strToWad(valueStr).eq('0')) return '0'
+  if (shownLessThanZeroPointZeroOne && islessThanZeroPointZeroOne) {
     return '< 0.01'
   }
   // a value may be too large to directly convert into Number.
