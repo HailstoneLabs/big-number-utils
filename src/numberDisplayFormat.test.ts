@@ -239,7 +239,7 @@ describe('getCommifiedFormat', () => {
     expect(getCommifiedFormat('abc')).toBe('0.00')
   })
 
-  it('returns 1,120,121.568234233234 when passing a string of 1120121.568234233234 and showExact is true', () => {
+  it('returns 1,120,121.568234233234 when passing a string of 1120121.568234233234 and deciaml is exact', () => {
     expect(getCommifiedFormat('1120121.568234233234', 'exact')).toBe(
       '1,120,121.568234233234',
     )
@@ -251,5 +251,9 @@ describe('getCommifiedFormat', () => {
 
   it('returns 1,120,121.568700 when passing a string of 1120121.5687', () => {
     expect(getCommifiedFormat('1120121.5687', 6)).toBe('1,120,121.568700')
+  })
+
+  it('returns 0.000 when passing a string of 0.000 and deciaml is exact', () => {
+    expect(getCommifiedFormat('0.000', 'exact')).toBe('0.00')
   })
 })
