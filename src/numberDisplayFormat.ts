@@ -204,10 +204,8 @@ function getCommifiedFormat(
   }
   if (actualValue === '') return '0'
   const actualValueWAD = getWad(actualValue)
-  if (actualValueWAD.isZero())
-    return decimalPlaceInput === 0
-      ? '0.00'
-      : getDpFormat('0.0', decimalPlaceInput)
+  if (actualValueWAD.isZero() && decimalPlace === 0) return '0'
+  if (actualValueWAD.isZero()) return '0.00'
   const isLessThanZeroPointZeroOne = lessThanZeroPointZeroOne(
     actualValueWAD.abs(),
     18,
