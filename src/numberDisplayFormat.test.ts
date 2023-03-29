@@ -44,7 +44,7 @@ describe('getDynamicFormat', () => {
     expect(getDynamicFormat(strToWad('100000'))).toBe('100K')
   })
   test('BN (< 100000) 10000 -> (commify) 1,0000.00', () => {
-    expect(getDynamicFormat(strToWad('10000'))).toBe('10,000.0')
+    expect(getDynamicFormat(strToWad('10000'))).toBe('10,000.00')
   })
   test('BN (< 100000) 1000.123 -> (commify) 1,0000.12', () => {
     expect(getDynamicFormat(strToWad('1000.123'))).toBe('1,000.12')
@@ -56,7 +56,7 @@ describe('getDynamicFormat', () => {
     expect(getDynamicFormat('100000')).toBe('100K')
   })
   test('String (< 100000) 10000 -> (commify) 10,000.00', () => {
-    expect(getDynamicFormat('10000')).toBe('10,000.0')
+    expect(getDynamicFormat('10000')).toBe('10,000.00')
   })
   test('String (< 100000) 1000.123 -> (commify) 1,0000.12', () => {
     expect(getDynamicFormat('1000.123')).toBe('1,000.12')
@@ -204,6 +204,14 @@ describe('getMillifiedFormat', () => {
   it('returns 0 when passing a non-number string', () => {
     expect(getMillifiedFormat('abc')).toBe('0')
   })
+
+  it('returns < 0.01 when passing 0.00001 and shownLessThanZeroPointZeroOne is true', () => {
+    expect(getMillifiedFormat('0.00001', true)).toBe('< 0.01')
+  })
+
+  it('returns 0 when passing 0 and shownLessThanZeroPointZeroOne is false', () => {
+    expect(getMillifiedFormat('0', false)).toBe('0')
+  })
 })
 
 describe('getCommifiedFormat', () => {
@@ -229,5 +237,27 @@ describe('getCommifiedFormat', () => {
 
   it('returns 0.00 when passing a non-number string', () => {
     expect(getCommifiedFormat('abc')).toBe('0.00')
+  })
+
+  it('returns 1,120,121.568234233234 when passing a string of 1120121.568234233234 and deciaml is exact', () => {
+    expect(getCommifiedFormat('1120121.568234233234', 'exact')).toBe(
+      '1,120,121.568234233234',
+    )
+  })
+
+  it('returns < 0.01 when passing a string of 0.000001', () => {
+    expect(getCommifiedFormat('0.000001', 0)).toBe('< 0.01')
+  })
+
+  it('returns 1,120,121.568700 when passing a string of 1120121.5687', () => {
+    expect(getCommifiedFormat('1120121.5687', 6)).toBe('1,120,121.568700')
+  })
+
+  it('returns 0.00 when passing a string of 0.000 and decimal is exact', () => {
+    expect(getCommifiedFormat('0.000', 'exact')).toBe('0.00')
+  })
+
+  it('returns 0 when passing a string of 0.000 and decimal is 0', () => {
+    expect(getCommifiedFormat('0.000', 0)).toBe('0')
   })
 })

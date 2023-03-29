@@ -1,8 +1,8 @@
-import { BigNumber, constants, ethers, utils } from "ethers";
-import millify from "millify";
-import { lessThanZeroPointZeroOne, strToWad } from "./DSMath";
-import { isParsableString } from "./isParsableString";
-import { WAD_DECIMALS } from "../constants";
+import { BigNumber, constants, ethers, utils } from 'ethers'
+import millify from 'millify'
+import { lessThanZeroPointZeroOne, strToWad } from './DSMath'
+import { isParsableString } from './isParsableString'
+import { WAD_DECIMALS } from '../constants'
 /**
 Get a string with all zeros. Example: getZerosStr(4) -> '0000'
 @param {number} numOfZeros
@@ -10,8 +10,8 @@ Get a string with all zeros. Example: getZerosStr(4) -> '0000'
 
 */
 export const getZerosStr = (num: number): string => {
-  return Array(num).fill("0").join("");
-};
+  return Array(num).fill('0').join('')
+}
 
 /**
  * Padding zero on numStr
@@ -20,17 +20,17 @@ export const getZerosStr = (num: number): string => {
  * @returns {string} numStr with padding zero
  */
 export const fillZeros = (numStr: string, decimalPlace: number): string => {
-  const decimalPart = numStr.split(".")[1];
+  const decimalPart = numStr.split('.')[1]
   if (decimalPart) {
     if (decimalPart.length > decimalPlace) {
-      return numStr;
+      return numStr
     }
     const numStrWithFilledZeros =
-      numStr + getZerosStr(decimalPlace - decimalPart.length);
-    return numStrWithFilledZeros;
+      numStr + getZerosStr(decimalPlace - decimalPart.length)
+    return numStrWithFilledZeros
   }
-  return numStr + (decimalPlace > 0 ? `.${getZerosStr(decimalPlace)}` : "");
-};
+  return numStr + (decimalPlace > 0 ? `.${getZerosStr(decimalPlace)}` : '')
+}
 
 /**
  * If a value is in WAD, it will format the value.
@@ -39,10 +39,10 @@ export const fillZeros = (numStr: string, decimalPlace: number): string => {
  */
 const getStringInput = (value: string | BigNumber): string => {
   if (ethers.BigNumber.isBigNumber(value)) {
-    return utils.formatEther(value);
+    return utils.formatEther(value)
   }
-  return isParsableString(value, WAD_DECIMALS, false) ? value : "0";
-};
+  return isParsableString(value, WAD_DECIMALS, false) ? value : '0'
+}
 
 /**
  *
@@ -51,43 +51,43 @@ const getStringInput = (value: string | BigNumber): string => {
  */
 const getWad = (value: string | BigNumber): BigNumber => {
   if (ethers.BigNumber.isBigNumber(value)) {
-    return value;
+    return value
   }
-  return strToWad(value);
-};
+  return strToWad(value)
+}
 /**
  * trim off trailing zeros after the decimal point
  * @param {string} x
  * @returns {string}
  */
 function trimTrailingZeros(x: string): string {
-  let ans = "";
-  const array = x.split(".");
+  let ans = ''
+  const array = x.split('.')
   // handle integer
-  array[0].split("").map((num) => (ans += num));
+  array[0].split('').map((num) => (ans += num))
   if (array.length === 1) {
-    return ans;
+    return ans
   }
 
   // handle decimal
   if (array.length === 2) {
-    let decimal = "";
-    const reverseDecimal = array[1].split("").reverse();
+    let decimal = ''
+    const reverseDecimal = array[1].split('').reverse()
     for (let i = 0; i < reverseDecimal.length; i++) {
-      if (reverseDecimal[i] != "0") {
+      if (reverseDecimal[i] != '0') {
         decimal = reverseDecimal
           .slice(i, reverseDecimal.length)
           .reverse()
-          .join("");
-        break;
+          .join('')
+        break
       }
     }
-    if (decimal !== "") {
-      ans += ".";
+    if (decimal !== '') {
+      ans += '.'
     }
-    ans += decimal;
+    ans += decimal
   }
-  return ans;
+  return ans
 }
 
 /**
@@ -98,15 +98,15 @@ function trimTrailingZeros(x: string): string {
  * @returns {string} significant figures
  */
 function getSfFormat(value: string | BigNumber, sf: number): string {
-  const valueStr = getStringInput(value);
+  const valueStr = getStringInput(value)
   const sfFormat = parseFloat(
-    Number.parseFloat(valueStr).toPrecision(sf)
-  ).toString();
+    Number.parseFloat(valueStr).toPrecision(sf),
+  ).toString()
   // check if sfFormat contain scientific notation (e)
-  if (sfFormat.includes("e")) {
-    return trimTrailingZeros(valueStr);
+  if (sfFormat.includes('e')) {
+    return trimTrailingZeros(valueStr)
   } else {
-    return trimTrailingZeros(sfFormat);
+    return trimTrailingZeros(sfFormat)
   }
 }
 /**
@@ -120,59 +120,71 @@ function getSfFormat(value: string | BigNumber, sf: number): string {
 function getDpFormat(
   value: string | BigNumber,
   decimalPlace = 2,
-  rounding: "down" | "off" = "down",
-  shownLessThanZeroPointZeroOne = false
+  rounding: 'down' | 'off' = 'down',
+  shownLessThanZeroPointZeroOne = false,
 ): string {
-  const valueStr = getStringInput(value);
-  if (strToWad(valueStr).isZero()) return "0." + getZerosStr(decimalPlace);
+  const valueStr = getStringInput(value)
+  if (strToWad(valueStr).isZero()) return '0.' + getZerosStr(decimalPlace)
   if (
     shownLessThanZeroPointZeroOne &&
-    strToWad(valueStr).lt(strToWad("0.01"))
+    strToWad(valueStr).lt(strToWad('0.01'))
   ) {
-    return "< 0.01";
+    return '< 0.01'
   }
   // check . exist
-  if (valueStr.includes(".")) {
+  if (valueStr.includes('.')) {
     // it is decimal number
-    const [integerStr, decimalNum] = valueStr.split(".");
-    if (!decimalNum) return fillZeros(valueStr.replace(".", ""), decimalPlace);
-    const digitForComparison = decimalNum[decimalPlace];
+    const [integerStr, decimalNum] = valueStr.split('.')
+    if (!decimalNum) return fillZeros(valueStr.replace('.', ''), decimalPlace)
+    const digitForComparison = decimalNum[decimalPlace]
     const shouldRoundOff =
       digitForComparison &&
-      BigNumber.from(digitForComparison).gte(BigNumber.from(5));
+      BigNumber.from(digitForComparison).gte(BigNumber.from(5))
     if (decimalPlace === 0) {
-      if (rounding === "off" && shouldRoundOff) {
-        return BigNumber.from(integerStr).add(constants.One).toString();
+      if (rounding === 'off' && shouldRoundOff) {
+        return BigNumber.from(integerStr).add(constants.One).toString()
       } else {
-        return integerStr;
+        return integerStr
       }
     }
-    const expectedDecimalNum = decimalNum.substring(0, decimalPlace);
-    if (rounding === "off" && shouldRoundOff) {
-      const isNegative = integerStr.includes("-");
+    const expectedDecimalNum = decimalNum.substring(0, decimalPlace)
+    if (rounding === 'off' && shouldRoundOff) {
+      const isNegative = integerStr.includes('-')
       const ansWad = strToWad(
-        integerStr.replace("-", "") + "." + expectedDecimalNum
-      );
+        integerStr.replace('-', '') + '.' + expectedDecimalNum,
+      )
       const valueAddedForRoundOffWad = strToWad(
-        "0." + getZerosStr(decimalPlace - 1) + "1"
-      );
-      const ans = utils.formatEther(ansWad.add(valueAddedForRoundOffWad));
-      return (isNegative ? "-" : "") + fillZeros(ans, decimalPlace);
+        '0.' + getZerosStr(decimalPlace - 1) + '1',
+      )
+      const ans = utils.formatEther(ansWad.add(valueAddedForRoundOffWad))
+      return (isNegative ? '-' : '') + fillZeros(ans, decimalPlace)
     } else {
-      return fillZeros(integerStr + "." + expectedDecimalNum, decimalPlace);
+      return fillZeros(integerStr + '.' + expectedDecimalNum, decimalPlace)
     }
   }
-  return fillZeros(valueStr, decimalPlace);
+  return fillZeros(valueStr, decimalPlace)
 }
 
 /**
  * @param {string | BigNumber} value a value in string or in WAD
  * @returns {string} a millified value with 1 d.p. For example, 12.2M, 1.4K
  */
-function getMillifiedFormat(value: string | BigNumber): string {
+function getMillifiedFormat(
+  value: string | BigNumber,
+  shownLessThanZeroPointZeroOne = false,
+): string {
+  const valueStr = getStringInput(value)
+  const islessThanZeroPointZeroOne = lessThanZeroPointZeroOne(
+    strToWad(valueStr),
+    18,
+  )
+  if (strToWad(valueStr).eq('0')) return '0'
+  if (shownLessThanZeroPointZeroOne && islessThanZeroPointZeroOne) {
+    return '< 0.01'
+  }
   // a value may be too large to directly convert into Number.
   // so trim it first
-  return millify(Number(getDpFormat(getStringInput(value), 1)));
+  return millify(Number(getDpFormat(getStringInput(value), 1)))
 }
 
 /**
@@ -184,18 +196,30 @@ function getMillifiedFormat(value: string | BigNumber): string {
 
 function getCommifiedFormat(
   actualValue: BigNumber | string,
-  decimalPlace = 2
+  decimalPlace: number | 'exact' = 2,
 ): string {
-  const actualValueWAD = getWad(actualValue);
-  if (actualValueWAD.isZero()) return getDpFormat("0.0", decimalPlace);
+  let decimalPlaceInput = 0
+  if (typeof decimalPlace == 'number') {
+    decimalPlaceInput = decimalPlace
+  }
+  if (actualValue === '') return '0'
+  const actualValueWAD = getWad(actualValue)
+  if (actualValueWAD.isZero() && decimalPlace === 0) return '0'
+  if (actualValueWAD.isZero()) return '0.00'
   const isLessThanZeroPointZeroOne = lessThanZeroPointZeroOne(
     actualValueWAD.abs(),
-    18
-  );
+    18,
+  )
   const displayValue = isLessThanZeroPointZeroOne
-    ? "< 0.01"
-    : utils.commify(getDpFormat(actualValue, decimalPlace));
-  return displayValue;
+    ? '< 0.01'
+    : decimalPlace === 'exact'
+    ? utils.commify(getStringInput(actualValue))
+    : fillZeros(
+        utils.commify(getDpFormat(actualValue, decimalPlaceInput)),
+        decimalPlaceInput,
+      )
+
+  return displayValue
 }
 
 /**
@@ -207,14 +231,14 @@ function getCommifiedFormat(
  */
 function getDynamicFormat(
   actualValue: BigNumber | string,
-  decimalPlace = 2
+  decimalPlace = 2,
 ): string {
-  const actualValueWAD = getWad(actualValue);
+  const actualValueWAD = getWad(actualValue)
   // if num ≥ 100,000 → millify
-  if (actualValueWAD.gte(strToWad("100000"))) {
-    return getMillifiedFormat(actualValue);
+  if (actualValueWAD.gte(strToWad('100000'))) {
+    return getMillifiedFormat(actualValue)
   } else {
-    return getCommifiedFormat(actualValue, decimalPlace);
+    return getCommifiedFormat(actualValue, decimalPlace)
   }
 }
 
@@ -224,5 +248,5 @@ export {
   getMillifiedFormat,
   getSfFormat,
   getDpFormat,
-  getStringInput
-};
+  getStringInput,
+}

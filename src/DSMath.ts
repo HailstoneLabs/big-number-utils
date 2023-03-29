@@ -137,6 +137,30 @@ export function wdiv(x: BigNumber, y: BigNumber): BigNumber {
 }
 
 /**
+ * @param {BigNumber} x in WAD
+ * @param {BigNumber} y in WAD
+ * @returns the quotient of x divided by y, in WAD
+ */
+export function safeWdiv(x: BigNumber, y: BigNumber): BigNumber {
+  if (y.eq(constants.Zero)) {
+    return constants.Zero
+  }
+  return wdiv(x, y)
+}
+
+/**
+ * @param {BigNumber} x in BigNumber
+ * @param {BigNumber} y in BigNumber
+ * @returns the quotient of x divided by y, in BigNumber
+ */
+export function safeDiv(x: BigNumber, y: BigNumber): BigNumber {
+  if (y.eq(constants.Zero)) {
+    return constants.Zero
+  }
+  return x.div(y)
+}
+
+/**
  * @param {BigNumber} x in RAY
  * @param {BigNumber} y in RAY
  * @returns the product of x and y, in RAY
