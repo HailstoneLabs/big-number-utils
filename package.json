@@ -2,9 +2,11 @@
   "name": "@hailstonelabs/big-number-utils",
   "version": "1.0.6",
   "description": "",
-  "type": "module",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.js",
+  "exports": {
+    ".": "./dist/src/index.js"
+  },
   "files": [
     "/dist"
   ],
