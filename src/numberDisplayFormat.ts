@@ -116,6 +116,7 @@ function getSfFormat(value: string | BigNumber, sf: number): string {
  * @param {number} decimalPlace number of decimal in integer, the default is 2
  * @param {'down'|'off'} rounding the default is rounding down
  * @param {boolean} shownLessThanZeroPointZeroOne the default is false
+ * @param {boolean} fillZero the default is true
  * @returns {string}
  */
 function getDpFormat(
@@ -138,7 +139,7 @@ function getDpFormat(
   if (valueStr.includes('.')) {
     // it is decimal number
     const [integerStr, decimalNum] = valueStr.split('.')
-    if (!decimalNum && !fillZero) return integerStr + '.'
+    if (!decimalNum && !fillZero) return integerStr
     if (!decimalNum) return fillZeros(valueStr.replace('.', ''), decimalPlace)
     const digitForComparison = decimalNum[decimalPlace]
     const shouldRoundOff =
