@@ -115,6 +115,7 @@ function getSfFormat(value: string | BigNumber, sf: number): string {
  * @param {string | BigNumber} value a value in string or in WAD
  * @param {number} decimalPlace number of decimal in integer, the default is 2
  * @param {'down'|'off'} rounding the default is rounding down
+ * @param {boolean} shownLessThanZeroPointZeroOne the default is false
  * @returns {string}
  */
 function getDpFormat(
@@ -122,8 +123,10 @@ function getDpFormat(
   decimalPlace = 2,
   rounding: 'down' | 'off' = 'down',
   shownLessThanZeroPointZeroOne = false,
+  fillZero = true,
 ): string {
   const valueStr = getStringInput(value)
+  if (strToWad(valueStr).isZero() && !fillZero) return '0'
   if (strToWad(valueStr).isZero()) return '0.' + getZerosStr(decimalPlace)
   if (
     shownLessThanZeroPointZeroOne &&
@@ -135,6 +138,7 @@ function getDpFormat(
   if (valueStr.includes('.')) {
     // it is decimal number
     const [integerStr, decimalNum] = valueStr.split('.')
+    if (!decimalNum && !fillZero) return integerStr + '.'
     if (!decimalNum) return fillZeros(valueStr.replace('.', ''), decimalPlace)
     const digitForComparison = decimalNum[decimalPlace]
     const shouldRoundOff =
@@ -159,9 +163,12 @@ function getDpFormat(
       const ans = utils.formatEther(ansWad.add(valueAddedForRoundOffWad))
       return (isNegative ? '-' : '') + fillZeros(ans, decimalPlace)
     } else {
+      if (!fillZero) return integerStr + '.' + expectedDecimalNum
       return fillZeros(integerStr + '.' + expectedDecimalNum, decimalPlace)
     }
   }
+
+  if (!fillZero) return valueStr
   return fillZeros(valueStr, decimalPlace)
 }
 
