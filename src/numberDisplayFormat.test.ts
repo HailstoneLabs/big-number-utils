@@ -165,7 +165,7 @@ describe('getDpFormat', () => {
     expect(getDpFormat('123.9', 6, 'down', false, false)).toBe('123.9')
   })
 
-  test('12. -> 12.', () => {
+  test('it return 12', () => {
     expect(getDpFormat('12.', 6, 'down', false, false)).toBe('12')
   })
 
@@ -173,7 +173,7 @@ describe('getDpFormat', () => {
     expect(getDpFormat('0', 6, 'down', false, false)).toBe('0')
   })
 
-  test('0. -> 0', () => {
+  test('it return 0', () => {
     expect(getDpFormat('0', 6, 'down', false, false)).toBe('0')
   })
 })
