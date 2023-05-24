@@ -155,6 +155,27 @@ describe('getDpFormat', () => {
   test('12. -> 12.0000', () => {
     expect(getDpFormat('12.', 4)).toBe('12.0000')
   })
+
+  test('123.9234234234 -> 123.923423', () => {
+    expect(getDpFormat('123.9234234234', 6, 'down', false, false)).toBe(
+      '123.923423',
+    )
+  })
+  test('123.9 -> 123.9', () => {
+    expect(getDpFormat('123.9', 6, 'down', false, false)).toBe('123.9')
+  })
+
+  test('it return 12', () => {
+    expect(getDpFormat('12.', 6, 'down', false, false)).toBe('12')
+  })
+
+  test('0 -> 0', () => {
+    expect(getDpFormat('0', 6, 'down', false, false)).toBe('0')
+  })
+
+  test('it return 0', () => {
+    expect(getDpFormat('0', 6, 'down', false, false)).toBe('0')
+  })
 })
 
 describe('getSfFormat', () => {
