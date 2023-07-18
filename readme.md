@@ -1,19 +1,16 @@
 # hailstonelabs/big-number-utils
 
-hailstonelabs/big-number-utils is a library for BigNumber formatting and calculation, developed by Hailstone Labs.
+hailstonelabs/big-number-utils is a library for bigint formatting and calculation, developed by Hailstone Labs.
 
-## Local usage
+## Introduction
 
-To link big-number-utils to local repo
+There are two versions of the Big Number Utils library.
 
-```sh
-# for build dist folder
-tsc
+- **Version 1**: This version uses the `ethers` library and its `bignumber` module.
+- **Version 2**: This version uses the `viem` library and the native JavaScript `bigin` library.
 
-yarn link
-```
-
-You can now run `yarn link "@hailstonelabs/big-number-utils"` in the projects where you want to use this package and it will be used instead.
+If you want to develop using Version 1, please checkout to the `main` branch. </br>
+If you want to develop using Version 2, please checkout to the `main-v2` branch.
 
 ## Installation
 
@@ -31,13 +28,11 @@ $ yarn add @hailstonelabs/big-number-utils
 
 ## Use
 
-_Big Number_
+_bigint_
 
 Many operations in Ethereum operate on numbers which are outside the range of safe values to use in JavaScript.
 
-A BigNumber is an object which safely allows mathematical operations on numbers of any magnitude. Most operations which need to return a value will return a BigNumber and parameters which accept values will generally accept them.
-
-This library is compatible with the BigNumber exported from ether.js [Source](https://docs.ethers.io/v5/api/utils/bignumber/).
+The BigInt.js Native package is a powerful JavaScript library that provides support for arbitrary precision integer arithmetic. It allows you to work with extremely large integers beyond the limitations of the native Number type in JavaScript.
 
 _Safe Arithmetic_
 
@@ -48,8 +43,8 @@ _WAD and RAY_
 A wad is a decimal number with 18 digits of precision and a ray is a decimal number with 27 digits of precision. These functions are necessary to account for the difference between how integer arithmetic behaves normally, and how decimal arithmetic should actually work.
 
 ```js
-const WAD = BigNumber.from(10).pow(18)
-const RAY = BigNumber.from(10).pow(27)
+const WAD = 10n ** 18
+const RAY = 10n ** 27
 ```
 
 ## DS Math API Reference
@@ -61,7 +56,7 @@ It changes string to WAD if not undefined or ParsableString, else return constan
 **Params**
 
 - `wadString` **{string | undefined}**
-- `returns` **{BigNumber}**
+- `returns` **{bigint}**
 
 ### [.getPercentageFromTwoWAD]
 
@@ -69,9 +64,9 @@ It returns the percentage of x in y, in string and return upperBound if the valu
 
 **Params**
 
-- `x` **{BigNumber}**: x in WAD
-- `y` **{BigNumber}**: t in WAD
-- `upperBound` **{BigNumber}**: the upper bound percentage, in WAD
+- `x` **{bigint}**: x in WAD
+- `y` **{bigint}**: t in WAD
+- `upperBound` **{bigint}**: the upper bound percentage, in WAD
 - `returns` **{string}**: the percentage of x in y, in string
 
 ```js
@@ -88,7 +83,7 @@ getPercentageFromTwoWAD(strToWad('50000'), strToWad('40000'), strToWad('100'))
 
 - `x` **{string}**: x number in string
 - `y` **{string}**: y number in string
-- `returns` **{BigNumber}**: the minimum value in WAD
+- `returns` **{bigint}**: the minimum value in WAD
 
 ### [.sum]
 
@@ -96,8 +91,8 @@ It returns the summation of two values.
 
 **Params**
 
-- `x` **{string | BigNumber}**: BigNumber must be WAD
-- `y` **{string | BigNumber}**: BigNumber must be WAD
+- `x` **{string | bigint}**: bigint must be WAD
+- `y` **{string | bigint}**: bigint must be WAD
 - `returns` **{string}**: sum
 
 **Example**
@@ -113,19 +108,19 @@ It compare x - y with the value.
 
 **Params**
 
-- `x` **{BigNumber}**
-- `y` **{BigNumber}**
-- `value` **{BigNumber}**
+- `x` **{bigint}**
+- `y` **{bigint}**
+- `value` **{bigint}**
 - `operator` **{'lt' | 'eq' | 'gt'}** less than / equal to / greater than
 - `returns` **{boolean}**
 
 **Example**
 
 ```js
-differenceComparesValue(BigNumber.from(20000), BigNumber.from(20000), 'eq')
+differenceComparesValue(bigint.from(20000), bigint.from(20000), 'eq')
 //=> true
 
-differenceComparesValue(BigNumber.from(40000), BigNumber.from(20000), 'lt')
+differenceComparesValue(bigint.from(40000), bigint.from(20000), 'lt')
 //=> false
 ```
 
@@ -135,14 +130,14 @@ It checks whether x is less than 0.01.
 
 **Params**
 
-- `x` **{BigNumber}**
+- `x` **{bigint}**
 - `decimal` **{number}**
 - `returns` **{boolean}**
 
 **Example**
 
 ```js
-lessThanZeroPointZeroOne(BigNumber.from(0.00003), 5))
+lessThanZeroPointZeroOne(bigint.from(0.00003), 5))
 //=> true
 ```
 
@@ -154,120 +149,120 @@ It changes tokenA amount (with tokenA decimal) to target value (with tokenB deci
 
 - `fromDecimal` **{number}**
 - `toDecimal` **{number}**
-- `fromAmount` **{BigNumber}**
-- `returns` **{BigNumber}**
+- `fromAmount` **{bigint}**
+- `returns` **{bigint}**
 
 ### [.nativeToWAD]
 
 **Params**
 
-- `x` **{BigNumber}** x in BigNumber
+- `x` **{bigint}** x in bigint
 - `decimal` **{number}**
-- `returns` **{BigNumber}**: convertion to WAD
+- `returns` **{bigint}**: convertion to WAD
 
 ### [.wadToNative]
 
 **Params**
 
-- `x` **{BigNumber}** x in WAD
+- `x` **{bigint}** x in WAD
 - `decimal` **{number}**
-- `returns` **{BigNumber}**: convertion to Origin
+- `returns` **{bigint}**: convertion to Origin
 
 ### [.bnIntToWAD]
 
 **Params**
 
-- `x` **{BigNumber}** in BigNumber Int
-- `returns` **{BigNumber}**: convertion to WAD
+- `x` **{bigint}** in bigint Int
+- `returns` **{bigint}**: convertion to WAD
 
 ### [.bnIntToRAY]
 
 **Params**
 
-- `x` **{BigNumber}** x in BigNumber Int
-- `returns` **{BigNumber}**: convertion to RAY
+- `x` **{bigint}** x in bigint Int
+- `returns` **{bigint}**: convertion to RAY
 
 ### [.wadToRay]
 
 **Params**
 
-- `x` **{BigNumber}** x in WAD
-- `returns` **{BigNumber}**: convertion to RAY
+- `x` **{bigint}** x in WAD
+- `returns` **{bigint}**: convertion to RAY
 
 ### [.rayToWad]
 
 **Params**
 
-- `x` **{BigNumber}** x in RAY
-- `returns` **{BigNumber}**: convertion to WAD
+- `x` **{bigint}** x in RAY
+- `returns` **{bigint}**: convertion to WAD
 
 ### [.wmul]
 
 **Params**
 
-- `x` **{BigNumber}** x in WAD
-- `y` **{BigNumber}** y in WAD
-- `returns` **{BigNumber}**: the product of x and y, in WAD
+- `x` **{bigint}** x in WAD
+- `y` **{bigint}** y in WAD
+- `returns` **{bigint}**: the product of x and y, in WAD
 
 ### [.wdiv]
 
 **Params**
 
-- `x` **{BigNumber}** x in WAD
-- `y` **{BigNumber}** y in WAD
-- `returns` **{BigNumber}**: the quotient of x divided by y, in WAD
+- `x` **{bigint}** x in WAD
+- `y` **{bigint}** y in WAD
+- `returns` **{bigint}**: the quotient of x divided by y, in WAD
 
 ### [.safeWdiv]
 
 **Params**
 
-- `x` **{BigNumber}** x in WAD
-- `y` **{BigNumber}** y in WAD
-- `returns` **{BigNumber}**: the quotient of x divided by y, in WAD
+- `x` **{bigint}** x in WAD
+- `y` **{bigint}** y in WAD
+- `returns` **{bigint}**: the quotient of x divided by y, in WAD
 
 ### [.safeDiv]
 
 **Params**
 
-- `x` **{BigNumber}** x in BigNumber
-- `y` **{BigNumber}** y in BigNumber
-- `returns` **{BigNumber}**: the quotient of x divided by y, in BigNumber
+- `x` **{bigint}** x in bigint
+- `y` **{bigint}** y in bigint
+- `returns` **{bigint}**: the quotient of x divided by y, in bigint
 
 ### [.rmul]
 
 **Params**
 
-- `x` **{BigNumber}** x in RAY
-- `y` **{BigNumber}** y in RAY
-- `returns` **{BigNumber}**: the product of x and y, in RAY
+- `x` **{bigint}** x in RAY
+- `y` **{bigint}** y in RAY
+- `returns` **{bigint}**: the product of x and y, in RAY
 
 ### [.rpow]
 
 **Params**
 
-- `x` **{BigNumber}** x in RAY
-- `n` **{BigNumber}**
-- `returns` **{BigNumber}**: the exponential of x to the power n, in RAY
+- `x` **{bigint}** x in RAY
+- `n` **{bigint}**
+- `returns` **{bigint}**: the exponential of x to the power n, in RAY
 
 ### [.sqrt]
 
 **Params**
 
-- `x` **{BigNumber}** x in BigNumber Int
-- `returns` **{BigNumber}**: the square root of x, in BigNumber Int
+- `x` **{bigint}** x in bigint Int
+- `returns` **{bigint}**: the square root of x, in bigint Int
 
 ### [.wsqrt]
 
 **Params**
 
-- `x` **{BigNumber}** x in WAD
-- `returns` **{BigNumber}**: the square root of x, in WAD
+- `x` **{bigint}** x in WAD
+- `returns` **{bigint}**: the square root of x, in WAD
 
 ## Parsable String API Reference
 
 ### [.isParsableString]
 
-Check whether bnString can be parsed as a BigNumber.
+Check whether bnString can be parsed as a bigint.
 
 **Params**
 
@@ -291,7 +286,7 @@ isParsableString(strToWad('100000000000000000000'), 18, false)
 - `bnString` **{string}**
 - `dp` **{number}** the decimals
 - `isNonNegativeOnly` **{boolean}**
-- `returns` **{BigNumber}**: If bnString is parsable, return bnStrin, else return 0
+- `returns` **{bigint}**: If bnString is parsable, return bnStrin, else return 0
 
 ## Number Display Format API Reference
 
@@ -301,7 +296,7 @@ If a value is in WAD, it will format the value.
 
 **Params**
 
-- `value` **{string | BigNumber}**: a value in string or in WAD
+- `value` **{string | bigint}**: a value in string or in WAD
 - `returns` **{string}**: a formatted string value
 
 **Example**
@@ -317,7 +312,7 @@ It trim extra decimals in order to avoid fractional component exceeds decimals.
 
 **Params**
 
-- `value` **{string | BigNumber}**: a value in string or in WAD
+- `value` **{string | bigint}**: a value in string or in WAD
 - `decimalPlace` **{number}**: decimal place, the default is 2
 - `rounding` **{'down'|'off'}**: decimal place, the default is down
 - `returns` **{string}**: a decimal trimmed value
@@ -338,7 +333,7 @@ It converts long numbers to human-readable string.
 
 **Params**
 
-- `value` **{string | BigNumber}**: a value in string or in WAD
+- `value` **{string | bigint}**: a value in string or in WAD
 
 - `returns` **{string}**: a millified value with 1 d.p.
 
@@ -358,7 +353,7 @@ It always checks whether an actualValue is less than 0.01.
 
 **Params**
 
-- `actualValue` **{string | BigNumber}**: a value in string or in WAD
+- `actualValue` **{string | bigint}**: a value in string or in WAD
 - `decimalPlace` **{number}**: decimal place, the default is 2
 - `returns` **{string}**: readable string, rounded to x decimal places or if the actualValue is less than 0.01, it returns "< 0.01"
 
@@ -378,7 +373,7 @@ If actualValue is greater than or equal to 100000 return millified format value,
 
 **Params**
 
-- `actualValue` **{string | BigNumber}**: a value in string or in WAD
+- `actualValue` **{string | bigint}**: a value in string or in WAD
 - `decimalPlace` **{number}**: decimal place, the default is 2
 - `returns` **{string}**: readable string with millified format or commified format
 
