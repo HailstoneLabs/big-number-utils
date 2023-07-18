@@ -1,4 +1,4 @@
-import { formatEther, parseUnits } from 'viem'
+import { parseUnits } from 'viem'
 import { MAX_LPTOKEN_SUPPLY_DIFFERENCE } from '../constants'
 import {
   bnIntToRAY,

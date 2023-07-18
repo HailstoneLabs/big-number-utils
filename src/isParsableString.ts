@@ -1,5 +1,4 @@
 import { parseUnits } from 'viem'
-import { utils } from 'ethers'
 /**
  * @param {string} bnString
  * @param {number} dp the decimals

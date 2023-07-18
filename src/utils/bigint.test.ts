@@ -1,4 +1,4 @@
-import { abs } from './BigInt'
+import { abs } from './bigInt'
 
 describe('abs', () => {
   it('should return 0 when input is 0n', () => {
