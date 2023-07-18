@@ -1,8 +1,9 @@
-import { BigNumber, constants, ethers, utils } from 'ethers'
 import millify from 'millify'
 import { lessThanZeroPointZeroOne, strToWad } from './DSMath'
 import { isParsableString } from './isParsableString'
 import { WAD_DECIMALS } from '../constants'
+import { formatEther } from 'viem'
+import { commify } from './utils/format'
 /**
 Get a string with all zeros. Example: getZerosStr(4) -> '0000'
 @param {number} numOfZeros
@@ -34,23 +35,27 @@ export const fillZeros = (numStr: string, decimalPlace: number): string => {
 
 /**
  * If a value is in WAD, it will format the value.
- * @param {string | BigNumber} value a value in string or in WAD
+ * @param {string | bigint} value a value in string or in WAD
  * @returns {string} a formatted string value
  */
-const getStringInput = (value: string | BigNumber): string => {
-  if (ethers.BigNumber.isBigNumber(value)) {
-    return utils.formatEther(value)
+const getStringInput = (value: string | bigint): string => {
+  if (typeof value === 'bigint') {
+    return formatEther(value)
   }
+  console.log(
+    'isParsableString(value, WAD_DECIMALS, false)',
+    isParsableString(value, WAD_DECIMALS, false),
+  )
   return isParsableString(value, WAD_DECIMALS, false) ? value : '0'
 }
 
 /**
  *
- * @param {string | BigNumber} value require a wad or wad string
+ * @param {string | bigint} value require a wad or wad string
  * @returns
  */
-const getWad = (value: string | BigNumber): BigNumber => {
-  if (ethers.BigNumber.isBigNumber(value)) {
+const getWad = (value: string | bigint): bigint => {
+  if (typeof value === 'bigint') {
     return value
   }
   return strToWad(value)
@@ -93,15 +98,16 @@ function trimTrailingZeros(x: string): string {
 /**
  * get significant figures format with trim Trailing Zeros
  * return to exact value to avoid displaying scientific notation
- * @param {string | BigNumber} value a value in string or in WAD
+ * @param {string | bigint} value a value in string or in WAD
  * @param {number} sf
  * @returns {string} significant figures
  */
-function getSfFormat(value: string | BigNumber, sf: number): string {
+function getSfFormat(value: string | bigint, sf: number): string {
   const valueStr = getStringInput(value)
   const sfFormat = parseFloat(
     Number.parseFloat(valueStr).toPrecision(sf),
   ).toString()
+  console.log('Check:', valueStr, sfFormat)
   // check if sfFormat contain scientific notation (e)
   if (sfFormat.includes('e')) {
     return trimTrailingZeros(valueStr)
@@ -112,7 +118,7 @@ function getSfFormat(value: string | BigNumber, sf: number): string {
 /**
  * To avoid fractional component exceeds decimals
  * Trim extra decimals if 1.1234567 and decimal is 6 then 1.123456
- * @param {string | BigNumber} value a value in string or in WAD
+ * @param {string | bigint} value a value in string or in WAD
  * @param {number} decimalPlace number of decimal in integer, the default is 2
  * @param {'down'|'off'} rounding the default is rounding down
  * @param {boolean} shownLessThanZeroPointZeroOne the default is false
@@ -120,19 +126,16 @@ function getSfFormat(value: string | BigNumber, sf: number): string {
  * @returns {string}
  */
 function getDpFormat(
-  value: string | BigNumber,
+  value: string | bigint,
   decimalPlace = 2,
   rounding: 'down' | 'off' = 'down',
   shownLessThanZeroPointZeroOne = false,
   fillZero = true,
 ): string {
   const valueStr = getStringInput(value)
-  if (strToWad(valueStr).isZero() && !fillZero) return '0'
-  if (strToWad(valueStr).isZero()) return '0.' + getZerosStr(decimalPlace)
-  if (
-    shownLessThanZeroPointZeroOne &&
-    strToWad(valueStr).lt(strToWad('0.01'))
-  ) {
+  if (strToWad(valueStr) === 0n && !fillZero) return '0'
+  if (strToWad(valueStr) === 0n) return '0.' + getZerosStr(decimalPlace)
+  if (shownLessThanZeroPointZeroOne && strToWad(valueStr) < strToWad('0.01')) {
     return '< 0.01'
   }
   // check . exist
@@ -143,11 +146,10 @@ function getDpFormat(
     if (!decimalNum) return fillZeros(valueStr.replace('.', ''), decimalPlace)
     const digitForComparison = decimalNum[decimalPlace]
     const shouldRoundOff =
-      digitForComparison &&
-      BigNumber.from(digitForComparison).gte(BigNumber.from(5))
+      digitForComparison && BigInt(digitForComparison) > BigInt(5)
     if (decimalPlace === 0) {
       if (rounding === 'off' && shouldRoundOff) {
-        return BigNumber.from(integerStr).add(constants.One).toString()
+        return (BigInt(integerStr) + 1n).toString()
       } else {
         return integerStr
       }
@@ -161,7 +163,7 @@ function getDpFormat(
       const valueAddedForRoundOffWad = strToWad(
         '0.' + getZerosStr(decimalPlace - 1) + '1',
       )
-      const ans = utils.formatEther(ansWad.add(valueAddedForRoundOffWad))
+      const ans = formatEther(ansWad + valueAddedForRoundOffWad)
       return (isNegative ? '-' : '') + fillZeros(ans, decimalPlace)
     } else {
       if (!fillZero) return integerStr + '.' + expectedDecimalNum
@@ -174,19 +176,19 @@ function getDpFormat(
 }
 
 /**
- * @param {string | BigNumber} value a value in string or in WAD
+ * @param {string | bigint} value a value in string or in WAD
  * @returns {string} a millified value with 1 d.p. For example, 12.2M, 1.4K
  */
 function getMillifiedFormat(
-  value: string | BigNumber,
+  value: string | bigint,
   shownLessThanZeroPointZeroOne = false,
 ): string {
   const valueStr = getStringInput(value)
   const islessThanZeroPointZeroOne = lessThanZeroPointZeroOne(
     strToWad(valueStr),
-    18,
+    18n,
   )
-  if (strToWad(valueStr).eq('0')) return '0'
+  if (strToWad(valueStr) === 0n) return '0'
   if (shownLessThanZeroPointZeroOne && islessThanZeroPointZeroOne) {
     return '< 0.01'
   }
@@ -197,33 +199,33 @@ function getMillifiedFormat(
 
 /**
  * It always checks whether an actualValue is less than 0.01.
- * @param {string | BigNumber} actualValue a value in string or in WAD
+ * @param {string | bigint} actualValue a value in string or in WAD
  * @param {number} decimalPlace decimal place, the default is 2
  * @returns {string} readable string, rounded to x decimal places or if the actualValue is less than 0.01, it returns "< 0.01".
  */
 
 function getCommifiedFormat(
-  actualValue: BigNumber | string,
+  actualValue: bigint | string,
   decimalPlace: number | 'exact' = 2,
 ): string {
   let decimalPlaceInput = 0
-  if (typeof decimalPlace == 'number') {
+  if (typeof decimalPlace === 'number') {
     decimalPlaceInput = decimalPlace
   }
   if (actualValue === '') return '0'
   const actualValueWAD = getWad(actualValue)
-  if (actualValueWAD.isZero() && decimalPlace === 0) return '0'
-  if (actualValueWAD.isZero()) return '0.00'
+  if (actualValueWAD === 0n && decimalPlace === 0) return '0'
+  if (actualValueWAD === 0n) return '0.00'
   const isLessThanZeroPointZeroOne = lessThanZeroPointZeroOne(
-    actualValueWAD.abs(),
-    18,
+    actualValueWAD,
+    18n,
   )
   const displayValue = isLessThanZeroPointZeroOne
     ? '< 0.01'
     : decimalPlace === 'exact'
-    ? utils.commify(getStringInput(actualValue))
+    ? commify(getStringInput(actualValue))
     : fillZeros(
-        utils.commify(getDpFormat(actualValue, decimalPlaceInput)),
+        commify(getDpFormat(actualValue, decimalPlaceInput)),
         decimalPlaceInput,
       )
 
@@ -233,17 +235,17 @@ function getCommifiedFormat(
 /**
  * If actualValue is greater than or equal to 100000 return millified format value,
  * else return commified format value.
- * @param {string | BigNumber} actualValue a value in string or in WAD
+ * @param {string | bigint} actualValue a value in string or in WAD
  * @param {number} decimalPlace decimal place, the default is 2
  * @returns {string} readable string with millified format or commified format
  */
 function getDynamicFormat(
-  actualValue: BigNumber | string,
+  actualValue: bigint | string,
   decimalPlace = 2,
 ): string {
   const actualValueWAD = getWad(actualValue)
   // if num ≥ 100,000 → millify
-  if (actualValueWAD.gte(strToWad('100000'))) {
+  if (actualValueWAD >= strToWad('100000')) {
     return getMillifiedFormat(actualValue)
   } else {
     return getCommifiedFormat(actualValue, decimalPlace)

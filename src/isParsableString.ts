@@ -1,5 +1,4 @@
-import { utils } from 'ethers'
-
+import { parseUnits } from 'viem'
 /**
  * @param {string} bnString
  * @param {number} dp the decimals
@@ -13,11 +12,13 @@ export const isParsableString = (
 ): boolean => {
   try {
     // check parsable
-    const bn = utils.parseUnits(bnString, dp)
+    if (!bnString) return false
+    const bn = parseUnits(bnString, dp)
     // check if it is negative
-    if (isNonNegativeOnly && bn.isNegative()) return false
+    if (isNonNegativeOnly && bn < 0n) return false
     // check if bnString dp is less than dp
     const nums = bnString.split('.')
+    console.log('nums', nums, bn)
     if (nums.length > 1) {
       const decimalsStr = nums[1]
       return decimalsStr.length <= dp
@@ -25,6 +26,7 @@ export const isParsableString = (
 
     return true
   } catch (err) {
+    console.log(err)
     return false
   }
 }
@@ -41,4 +43,3 @@ export const getParsableString = (
   }
   return parsableString
 }
-
