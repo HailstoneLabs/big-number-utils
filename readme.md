@@ -2,6 +2,19 @@
 
 hailstonelabs/big-number-utils is a library for BigNumber formatting and calculation, developed by Hailstone Labs.
 
+## Local usage
+
+To link big-number-utils to local repo
+
+```sh
+# for build dist folder
+tsc
+
+yarn link
+```
+
+You can now run `yarn link "@hailstonelabs/big-number-utils"` in the projects where you want to use this package and it will be used instead.
+
 ## Installation
 
 To install and set up the library, run:

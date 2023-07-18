@@ -1,3 +1,3 @@
-export * from "./numberDisplayFormat";
-export * from "./DSMath";
-export * from "./isParsableString";
+export * from './numberDisplayFormat'
+export * from './DSMath'
+export * from './isParsableString'

@@ -1,4 +1,4 @@
-import { BigNumber, constants, utils } from 'ethers'
+import { formatEther, parseUnits } from 'viem'
 import { MAX_LPTOKEN_SUPPLY_DIFFERENCE } from '../constants'
 import {
   bnIntToRAY,
@@ -30,19 +30,19 @@ describe('DSMath sum', () => {
     expect(sum(strToWad('10.92'), strToWad('102'))).toBe('112.92')
   })
   test('sum two wad 10 str 10 -> 20', () => {
-    expect(sum(strToWad('10'), '10')).toBe('20.0')
+    expect(sum(strToWad('10'), '10')).toBe('20')
   })
   test('sum two wad 0 str 10 -> 10', () => {
-    expect(sum(strToWad('0'), '10')).toBe('10.0')
+    expect(sum(strToWad('0'), '10')).toBe('10')
   })
   test('sum two wad 0 str 10 -> 10', () => {
-    expect(sum(strToWad('0'), '10')).toBe('10.0')
+    expect(sum(strToWad('0'), '10')).toBe('10')
   })
   test('sum two "" "" -> 0.0', () => {
-    expect(sum('', '')).toBe('0.0')
+    expect(sum('', '')).toBe('0')
   })
   test('sum two wad 0 str 10 -> 10', () => {
-    expect(sum(strToWad('0'), '10')).toBe('10.0')
+    expect(sum(strToWad('0'), '10')).toBe('10')
   })
 })
 describe('DSMath differenceComparesValue', () => {
@@ -81,152 +81,157 @@ describe('DSMath differenceComparesValue', () => {
 })
 describe('DSMath originToWAD', () => {
   test('origin 6 decimal to WAD', () => {
-    const x = utils.parseUnits('9.123467', 6)
+    const x = parseUnits('9.123467', 6)
     const a = nativeToWAD(x, 6)
-    expect(a.eq(BigNumber.from('9123467000000000000'))).toBeTruthy()
+    expect(a === 9123467000000000000n).toBeTruthy()
   })
 })
 
 describe('DSMath wadToOrigin', () => {
   test('WAD to origin 6 decimal ', () => {
-    const x = utils.parseUnits('9.123467', 18)
+    const x = parseUnits('9.123467', 18)
     const a = wadToNative(x, 6)
-    expect(a.eq(BigNumber.from('9123467'))).toBeTruthy()
+    expect(a === 9123467n).toBeTruthy()
   })
 })
 
 describe('DSMath bnIntToWAD', () => {
   test('1 in WAD', () => {
-    const a = bnIntToWAD(BigNumber.from(1))
-    expect(a.eq(BigNumber.from('1000000000000000000'))).toBeTruthy()
+    const a = bnIntToWAD(1n)
+    expect(a === 1000000000000000000n).toBeTruthy()
   })
 })
 
 describe('DSMath bnIntToRAY', () => {
   test('1 in RAY', () => {
-    const a = bnIntToRAY(BigNumber.from(1))
-    expect(a.eq(BigNumber.from('1000000000000000000000000000'))).toBeTruthy()
+    const a = bnIntToRAY(1n)
+    expect(a === 1000000000000000000000000000n).toBeTruthy()
   })
 })
 
 describe('DSMath wmul', () => {
   test('1*1', () => {
-    const a = bnIntToWAD(BigNumber.from(1))
-    const b = bnIntToWAD(BigNumber.from(1))
+    const a = bnIntToWAD(1n)
+    const b = bnIntToWAD(1n)
     const result = wmul(a, b)
-    expect(result.eq(WAD)).toBeTruthy()
+    expect(result === WAD).toBeTruthy()
   })
 
   test('0*0', () => {
-    const result = wmul(constants.Zero, constants.Zero)
-    expect(result.eq(constants.Zero)).toBeTruthy()
+    const result = wmul(0n, 0n)
+    expect(result === 0n).toBeTruthy()
   })
 
   test('56*37', () => {
-    const a = bnIntToWAD(BigNumber.from(56))
-    const b = bnIntToWAD(BigNumber.from(37))
+    const a = bnIntToWAD(56n)
+    const b = bnIntToWAD(37n)
     const result = wmul(a, b)
-    expect(result.eq(bnIntToWAD(BigNumber.from(2072)))).toBeTruthy()
+    expect(result === bnIntToWAD(2072n)).toBeTruthy()
   })
 })
 
 describe('DSMath wdiv', () => {
   test('1/1', () => {
-    const a = bnIntToWAD(BigNumber.from(1))
-    const b = bnIntToWAD(BigNumber.from(1))
+    const a = bnIntToWAD(1n)
+    const b = bnIntToWAD(1n)
     const result = wdiv(a, b)
-    expect(result.eq(WAD)).toBeTruthy()
+    expect(result === WAD).toBeTruthy()
   })
 
   test('1/100', () => {
-    const a = bnIntToWAD(BigNumber.from(1))
-    const b = bnIntToWAD(BigNumber.from(100))
+    const a = bnIntToWAD(1n)
+    const b = bnIntToWAD(100n)
     const result = wdiv(a, b)
-    expect(result.eq(WAD.div(100))).toBeTruthy()
+    expect(result === WAD / 100n).toBeTruthy()
   })
 
   test('20/3', () => {
-    const a = bnIntToWAD(BigNumber.from(20))
-    const b = bnIntToWAD(BigNumber.from(3))
+    const a = bnIntToWAD(20n)
+    const b = bnIntToWAD(3n)
     const result = wdiv(a, b)
-    expect(result.eq(BigNumber.from('6666666666666666667'))).toBeTruthy()
+    expect(result === 6666666666666666667n).toBeTruthy()
   })
 })
 
 describe('DSMath safeWdiv', () => {
   test('1/100', () => {
-    const a = bnIntToWAD(BigNumber.from(1))
-    const b = bnIntToWAD(BigNumber.from(100))
+    const a = bnIntToWAD(1n)
+    const b = bnIntToWAD(100n)
     const result = safeWdiv(a, b)
-    expect(result.eq(WAD.div(100))).toBeTruthy()
+    expect(result === WAD / 100n).toBeTruthy()
   })
 
   test('1/0', () => {
-    const a = bnIntToWAD(BigNumber.from(1))
-    const b = bnIntToWAD(BigNumber.from(0))
+    const a = bnIntToWAD(1n)
+    const b = bnIntToWAD(0n)
     const result = safeWdiv(a, b)
-    expect(result.eq(0)).toBeTruthy()
+    expect(result === 0n).toBeTruthy()
   })
 })
 
 describe('DSMath safeDiv', () => {
   test('1000/100', () => {
-    const a = BigNumber.from('1000')
-    const b = BigNumber.from('100')
+    const a = 1000n
+    const b = 100n
     const result = safeDiv(a, b)
-    expect(result.eq(BigNumber.from('10'))).toBeTruthy()
+    expect(result === 10n).toBeTruthy()
   })
 
   test('1000/0', () => {
-    const a = BigNumber.from('1000')
-    const b = BigNumber.from('0')
+    const a = 1000n
+    const b = 0n
     const result = safeDiv(a, b)
-    expect(result.eq(BigNumber.from('0'))).toBeTruthy()
+    expect(result === 0n).toBeTruthy()
   })
 })
 
 describe('DSMath rmul', () => {
   test('1*1', () => {
-    const a = bnIntToRAY(BigNumber.from(1))
-    const b = bnIntToRAY(BigNumber.from(1))
+    const a = bnIntToRAY(1n)
+    const b = bnIntToRAY(1n)
     const result = rmul(a, b)
-    expect(result.eq(RAY)).toBeTruthy()
+    expect(result === RAY).toBeTruthy()
   })
 
   test('56*37', () => {
-    const a = bnIntToRAY(BigNumber.from(56))
-    const b = bnIntToRAY(BigNumber.from(37))
+    const a = bnIntToRAY(56n)
+    const b = bnIntToRAY(37n)
     const result = rmul(a, b)
-    expect(result.eq(bnIntToRAY(BigNumber.from(2072)))).toBeTruthy()
+    expect(result === bnIntToRAY(2072n)).toBeTruthy()
   })
 })
 
 describe('DSMath rpow', () => {
   test('1**1', () => {
-    const a = bnIntToRAY(BigNumber.from(1))
-    const b = BigNumber.from(100)
+    const a = bnIntToRAY(1n)
+    const b = 100n
     const result = rpow(a, b)
-    expect(result.eq(RAY)).toBeTruthy()
+    expect(result === RAY).toBeTruthy()
   })
 
   test('2**10', () => {
-    const a = bnIntToRAY(BigNumber.from(2))
-    const b = BigNumber.from(10)
+    const a = bnIntToRAY(2n)
+    const b = 10n
     const result = rpow(a, b)
-    expect(result.eq(bnIntToRAY(BigNumber.from(1024)))).toBeTruthy()
+    expect(result === bnIntToRAY(1024n)).toBeTruthy()
   })
 })
 
 describe('DSMath sqrt', () => {
   test('sqrt(1) = 1', () => {
-    const x = BigNumber.from(1)
+    const x = 1n
     const result = sqrt(x)
-    expect(result.eq(BigNumber.from(1))).toBeTruthy()
+    expect(result === 1n).toBeTruthy()
   })
   test('sqrt(10) = 3', () => {
-    const x = BigNumber.from(10)
+    const x = 10n
     const result = sqrt(x)
-    expect(result.eq(BigNumber.from(3))).toBeTruthy()
+    expect(result === 3n).toBeTruthy()
+  })
+  test('sqrt(10) = 3', () => {
+    const x = bnIntToWAD(10n)
+    const result = sqrt(x)
+    expect(result === 3162277660n).toBeTruthy()
   })
 })
 
@@ -234,17 +239,17 @@ describe('DSMath wsqrt', () => {
   test('wsqrt(WAD) = WAD', () => {
     const x = WAD
     const result = wsqrt(x)
-    expect(result.eq(WAD)).toBeTruthy()
+    expect(result === WAD).toBeTruthy()
   })
   test('wsqrt(9 WAD) = 3 WAD', () => {
     const x = strToWad('9')
     const result = wsqrt(x)
-    expect(result.eq(strToWad('3'))).toBeTruthy()
+    expect(result === strToWad('3')).toBeTruthy()
   })
   test('wsqrt(10 WAD) = 3 WAD', () => {
     const x = strToWad('10')
     const result = wsqrt(x)
-    expect(result.eq(strToWad('3.162277660168379331'))).toBeTruthy()
+    expect(result === strToWad('3.162277660168379331')).toBeTruthy()
   })
 })
 
@@ -280,25 +285,25 @@ describe('getPercentageFromTwoWAD', () => {
 
   test('getPercentageFromTwoWAD(100 WAD, 100 WAD-> "100.0"', () => {
     expect(getPercentageFromTwoWAD(strToWad('100'), strToWad('100'))).toEqual(
-      '100.0',
+      '100',
     )
   })
 
   test('getPercentageFromTwoWAD(100 WAD, 100 WAD, upperbound 80WAD-> "80.0"', () => {
     expect(
       getPercentageFromTwoWAD(strToWad('100'), strToWad('100'), strToWad('80')),
-    ).toEqual('80.0')
+    ).toEqual('80')
   })
 })
 
 describe('getMinValue', () => {
   test('getMinValue(900, 1000) => 900', () => {
     const result = strToWad('900')
-    expect(getMinValue('900', '1000').eq(result)).toBeTruthy()
+    expect(getMinValue('900', '1000') === result).toBeTruthy()
   })
 
   test('getMinValue(100000, 1) => 1', () => {
     const result = strToWad('1')
-    expect(getMinValue('100000', '1').eq(result)).toBeTruthy()
+    expect(getMinValue('100000', '1') === result).toBeTruthy()
   })
 })
